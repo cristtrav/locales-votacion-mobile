@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MainPageRoutingModule } from './main-routing.module';
+import { LocalesPageRoutingModule } from './locales-routing.module';
 
-import { MainPage } from './main.page';
+import { LocalesPage } from './locales.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MainPageRoutingModule
+    LocalesPageRoutingModule
   ],
-  declarations: [MainPage]
+  declarations: [LocalesPage]
 })
-export class MainPageModule {}
+export class LocalesPageModule {}

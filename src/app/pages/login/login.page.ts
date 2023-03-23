@@ -46,7 +46,7 @@ export class LoginPage implements OnInit {
             duration: 1500
           }).then(t => t.present());
           Preferences.set({key: 'usuario', value: `${JSON.stringify(votante)}`});
-          this.router.navigate(['main', 'votantes'])
+          this.router.navigate(['votantes'])
         },
         error: (e) => {
           console.error('Error al obtener votante por CI', e);

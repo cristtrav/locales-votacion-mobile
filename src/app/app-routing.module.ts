@@ -12,10 +12,6 @@ const canAccessLoginFn: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
@@ -26,10 +22,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'main',
+    path: 'votantes',
     canActivate: [canAccessMainFn],
-    loadChildren: () => import('./pages/main/main.module').then( m => m.MainPageModule),
+    loadChildren: () => import('./pages/votantes/votantes.module').then( m => m.VotantesPageModule),
   },
+  {
+    path: 'locales',
+    loadChildren: () => import('./pages/locales/locales.module').then( m => m.LocalesPageModule)
+  }
 ];
 
 @NgModule({

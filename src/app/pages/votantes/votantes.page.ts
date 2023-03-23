@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, ViewWillEnter } from '@ionic/angular';
 import { Votante } from 'src/app/dto/votante.dto';
 import { SessionService } from 'src/app/services/session.service';
 import { VotantesService } from 'src/app/services/votantes.service';
@@ -9,7 +9,7 @@ import { VotantesService } from 'src/app/services/votantes.service';
   templateUrl: './votantes.page.html',
   styleUrls: ['./votantes.page.scss'],
 })
-export class VotantesPage implements OnInit {
+export class VotantesPage implements OnInit, ViewWillEnter {
 
   lstVotantes: Votante[] = [];
   isAddModalOpen: boolean = false;
@@ -22,8 +22,12 @@ export class VotantesPage implements OnInit {
     private toastSrv: ToastController
   ) { }
 
-  ngOnInit() {
+  ionViewWillEnter(): void {
     this.cargarPosibles();
+  }
+
+  ngOnInit() {
+    
   }
 
   cargarPosibles(){
@@ -31,6 +35,7 @@ export class VotantesPage implements OnInit {
      this.loadingVotantes = true;
       this.votantesSrv.findPosiblesByCi(this.sessionSrv.usuario.ci).subscribe({
         next: (votantes) => {
+          console.log("posibles cargados");
           this.lstVotantes = votantes;
           this.loadingVotantes = false;
         },
@@ -45,6 +50,8 @@ export class VotantesPage implements OnInit {
           this.loadingVotantes = false;
         }
       })
+    }else{
+      console.log("usuario null")
     }
   }
 

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SessionService } from './services/session.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+
+  constructor(
+    public sessionSrv: SessionService,
+    private router: Router
+  ) {}
+
+  cerrarSesion(){
+    this.sessionSrv.usuario = null;
+    this.router.navigate(['login']);
+  }
+  
 }

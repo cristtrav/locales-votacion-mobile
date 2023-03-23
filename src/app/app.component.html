@@ -1,3 +1,37 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="main-content" type="overlay" [disabled]="!sessionSrv.usuario">
+    <ion-header class="ion-padding cabecera-menu" >
+      <div class="cabecera-menu">
+        <ion-img src="assets/user.png" style="width: 100px;"></ion-img>
+        <ion-text color="light">
+          <h4>{{ sessionSrv.usuario?.nombres }} {{ sessionSrv.usuario?.apellidos}}</h4>
+          {{ sessionSrv.usuario?.ci | number }}
+        </ion-text>
+        
+      </div>
+    </ion-header>
+    <ion-content>
+      <ion-list lines="full">
+        <ion-menu-toggle autoHide="true">
+          <ion-item button routerLink="/votantes" routerLinkActive="selected">
+            <ion-icon slot="start" name="people-outline"></ion-icon>
+            <ion-label>Votantes</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle autoHide="true">
+          <ion-item button routerLink="/locales" routerLinkActive="selected">
+            <ion-icon slot="start" name="location-outline"></ion-icon>
+            <ion-label>Locales</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+    <ion-footer >
+          <ion-item button lines="none" (click)="cerrarSesion()">
+            <ion-icon slot="start" name="exit-outline"></ion-icon>
+            <ion-label>Cerrar Sesión</ion-label>
+          </ion-item>
+    </ion-footer>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>

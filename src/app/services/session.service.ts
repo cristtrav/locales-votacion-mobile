@@ -19,7 +19,7 @@ export class SessionService {
   }
 
   canAccessSession(): boolean | UrlTree{
-    if(this.usuario != null) return this.router.createUrlTree(['main', 'votantes']);
+    if(this.usuario != null) return this.router.createUrlTree(['votantes']);
     return true;
   }
 

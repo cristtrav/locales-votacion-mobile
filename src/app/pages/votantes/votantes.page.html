@@ -1,6 +1,14 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Votantes ({{ lstVotantes.length }})</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cargarPosibles()">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-progress-bar *ngIf="loadingVotantes" type="indeterminate" color="success"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
