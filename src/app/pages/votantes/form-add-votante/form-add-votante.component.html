@@ -26,9 +26,12 @@
               {{ votante.nombres }} {{ votante.apellidos }}
               <p>Nro. Documento: {{ votante.ci | number }}</p>
             </ion-label>
-            <ion-button slot="end" size="default" (click)="add(votante)" [disabled]="loadingAdd">
-              <ion-icon *ngIf="!loadingAdd" slot="icon-only" name="add"></ion-icon>
-              <ion-spinner *ngIf="loadingAdd" slot="icon-only"></ion-spinner>
+            <ion-button *ngIf="ciVotantesExistentesSet.has(votante.ci)" slot="end" color="success" disabled="true" size="default">
+              <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!ciVotantesExistentesSet.has(votante.ci)" slot="end" size="default" (click)="add(votante)" [disabled]="mapLoadingAdd.get(votante.ci)">
+              <ion-icon *ngIf="!mapLoadingAdd.get(votante.ci)" slot="icon-only" name="add"></ion-icon>
+              <ion-spinner *ngIf="mapLoadingAdd.get(votante.ci)" slot="icon-only"></ion-spinner>
             </ion-button>
           </ion-item>
         </ion-list>

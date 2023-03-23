@@ -17,6 +17,7 @@ export class FormAddVotanteComponent implements OnInit {
   votanteAgregado = new EventEmitter<Votante>();
 
   lstVotantes: Votante[] = [];
+  ciVotantesExistentesSet = new Set<number>();
 
   isAddModalOpen: boolean = false;
   form: FormGroup = new FormGroup({
@@ -24,7 +25,7 @@ export class FormAddVotanteComponent implements OnInit {
   })
 
   loadingBusqueda: boolean = false;
-  loadingAdd: boolean = false;
+  mapLoadingAdd = new Map<number, boolean>();
 
   constructor(
     private votantesSrv: VotantesService,
@@ -54,7 +55,9 @@ export class FormAddVotanteComponent implements OnInit {
       }).subscribe({
         next: (resp) => {
           this.loadingBusqueda = false;
-          this.lstVotantes = resp.votantes.filter(votante => !resp.cargados.find(cargado => cargado.ci == votante.ci));
+          this.ciVotantesExistentesSet.clear();
+          resp.cargados.forEach(votanteExistente => {this.ciVotantesExistentesSet.add(votanteExistente.ci)});
+          this.lstVotantes = resp.votantes;
           let header = '';
           if(resp.cantidad > 100) header = 'Mas de 100 coincidencias';
           else header = `${resp.votantes.length} ${resp.votantes.length === 1 ? 'coincidencia' : 'coincidencias'}`;
@@ -81,20 +84,20 @@ export class FormAddVotanteComponent implements OnInit {
   add(votante: Votante) {
     const ciVotanteCarga = this.sessionSrv.usuario?.ci;
     if (ciVotanteCarga != null) {
-      this.loadingAdd = true;
+      this.mapLoadingAdd.set(votante.ci, true);
       this.votantesSrv.add({ ciVotante: votante.ci, ciVotanteCarga }).subscribe({
         next: () => {
           this.votanteAgregado.emit(votante);
-          this.lstVotantes = this.lstVotantes.filter(vt => vt.ci != votante.ci);
-          this.loadingAdd = false;
+          this.ciVotantesExistentesSet.add(votante.ci);
+          this.mapLoadingAdd.set(votante.ci, false);
           this.toastSrv.create({
             header: 'Votante agregado',
             duration: 1500,
             color: 'success'
           }).then(t => t.present());
         },
-        error: (e) => {
-          this.loadingAdd = false;
+        error: (e) => {          
+          this.mapLoadingAdd.set(votante.ci, false);
           console.error('Error al agregar votante', e);
           this.toastSrv.create({
             header: 'Error al agregar',
