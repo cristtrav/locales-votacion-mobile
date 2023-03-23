@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { SessionService } from './services/session.service';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent {
   cerrarSesion(){
     this.sessionSrv.usuario = null;
     this.router.navigate(['login']);
+    Preferences.remove({key: 'usuario'});
   }
   
 }

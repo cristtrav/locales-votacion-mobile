@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { SessionService } from 'src/app/services/session.service';
 import { VotantesService } from 'src/app/services/votantes.service';
-import { Preferences } from '@capacitor/preferences'; 
+import { Preferences } from '@capacitor/preferences';
+import { Votante } from 'src/app/dto/votante.dto';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,8 @@ export class LoginPage implements OnInit {
     if (this.form.valid) {
       const ci = this.form.controls['ci'].value;
       this.votantesSrv.findByCi(ci).subscribe({
-        next: (votante) => {
+        next: async (votante) => {
+          if (!(await this.yaEstoyRegistrado(votante.ci))) await this.registrarAUnoMismo(votante);
           this.sessionSrv.usuario = votante;
           this.toastSrv.create({
             header: 'Ingreso correcto',
@@ -45,7 +47,7 @@ export class LoginPage implements OnInit {
             color: 'success',
             duration: 1500
           }).then(t => t.present());
-          Preferences.set({key: 'usuario', value: `${JSON.stringify(votante)}`});
+          Preferences.set({ key: 'usuario', value: `${JSON.stringify(votante)}` });
           this.router.navigate(['votantes'])
         },
         error: (e) => {
@@ -59,7 +61,33 @@ export class LoginPage implements OnInit {
         }
       })
     }
+  }
 
+  private async yaEstoyRegistrado(ci: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.votantesSrv.findPosiblesByCi(ci).subscribe({
+        next: (votantes) => {
+          resolve(votantes.find(vot => vot.ci == ci) != null);
+        },
+        error: (e) => {
+          console.error('Error al cargar posibles', e);
+          reject(e);
+        }
+      })
+    });
+  }
+
+  private async registrarAUnoMismo(votante: Votante): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.votantesSrv.add({ ciVotante: votante.ci, ciVotanteCarga: votante.ci }).subscribe({
+        next: () => resolve(),
+        error: (e) => {
+          console.error('Error al cargar a uno mismo como votante', e)
+          reject();
+        }
+      });
+    });
+    
   }
 
 }

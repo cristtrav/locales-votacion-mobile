@@ -14,7 +14,7 @@ export class VotantesPage implements OnInit, ViewWillEnter {
   lstVotantes: Votante[] = [];
   isAddModalOpen: boolean = false;
   loadingVotantes: boolean = false;
-  
+
   constructor(
     private votantesSrv: VotantesService,
     private sessionSrv: SessionService,
@@ -27,12 +27,11 @@ export class VotantesPage implements OnInit, ViewWillEnter {
   }
 
   ngOnInit() {
-    
   }
 
-  cargarPosibles(){
-    if(this.sessionSrv.usuario?.ci){
-     this.loadingVotantes = true;
+  cargarPosibles() {
+    if (this.sessionSrv.usuario?.ci) {
+      this.loadingVotantes = true;
       this.votantesSrv.findPosiblesByCi(this.sessionSrv.usuario.ci).subscribe({
         next: (votantes) => {
           this.lstVotantes = votantes;
@@ -49,16 +48,16 @@ export class VotantesPage implements OnInit, ViewWillEnter {
           this.loadingVotantes = false;
         }
       })
-    }else{
+    } else {
       console.log("usuario null")
     }
   }
 
-  setAddModalOpen(isOpen: boolean){
+  setAddModalOpen(isOpen: boolean) {
     this.isAddModalOpen = isOpen;
   }
 
-  confirmDelete(votante: Votante){
+  confirmDelete(votante: Votante) {
     this.alertSrv.create({
       header: '¿Desea eliminar el votante?',
       message: `(${votante.ci}) ${votante.nombres} ${votante.apellidos}`,
@@ -76,9 +75,9 @@ export class VotantesPage implements OnInit, ViewWillEnter {
     }).then(c => c.present());
   }
 
-  delete(votante: Votante){
+  delete(votante: Votante) {
     const ciVotanteCarga = this.sessionSrv.usuario?.ci;
-    if(ciVotanteCarga) this.votantesSrv.delete({ciVotante: votante.ci, ciVotanteCarga}).subscribe({
+    if (ciVotanteCarga) this.votantesSrv.delete({ ciVotante: votante.ci, ciVotanteCarga }).subscribe({
       next: () => {
         this.cargarPosibles();
         this.toastSrv.create({
