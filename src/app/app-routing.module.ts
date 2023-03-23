@@ -1,5 +1,10 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { inject, NgModule } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, PreloadAllModules, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { SessionService } from './services/session.service';
+
+const canAccessMainFn: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  return inject(SessionService).canAccessMain()
+}
 
 const routes: Routes = [
   {
@@ -8,8 +13,17 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'main',
+    canActivate: [canAccessMainFn],
+    loadChildren: () => import('./pages/main/main.module').then( m => m.MainPageModule),
   },
 ];
 
@@ -20,3 +34,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

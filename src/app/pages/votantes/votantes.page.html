@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Votantes ({{ lstVotantes.length }})</ion-title>
+    <ion-progress-bar *ngIf="loadingVotantes" type="indeterminate" color="success"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let votante of lstVotantes">
+      <ion-label>
+        {{ votante.nombres }} {{ votante.apellidos }}
+        <p>Nro. Documento: {{ votante.ci | number }}</p>
+      </ion-label>
+      <ion-button slot="end" size="default" color="danger" (click)="confirmDelete(votante)">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="setAddModalOpen(true)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal [isOpen]="isAddModalOpen" (didDismiss)="cargarPosibles()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Agregar</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setAddModalOpen(false)">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <app-form-add-votante></app-form-add-votante>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

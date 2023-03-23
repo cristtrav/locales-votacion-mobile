@@ -1,0 +1,38 @@
+<form [formGroup]="form">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item fill="outline">
+          <ion-label position="floating">Búsqueda</ion-label>
+          <ion-input placeholder="CI o Nombres o Apellidos" formControlName="busqueda"></ion-input>
+          <ion-note slot="error">Ingrese un valor a buscar (Min. 3 carácteres)</ion-note>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" (click)="buscar()" [disabled]="loadingBusqueda">
+          <ion-icon *ngIf="!loadingBusqueda" slot="start" name="search"></ion-icon>
+          <ion-spinner *ngIf="loadingBusqueda"></ion-spinner>
+          Buscar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let votante of lstVotantes" >
+            <ion-label class="ion-text-wrap">
+              {{ votante.nombres }} {{ votante.apellidos }}
+              <p>Nro. Documento: {{ votante.ci | number }}</p>
+            </ion-label>
+            <ion-button slot="end" size="default" (click)="add(votante.ci)" [disabled]="loadingAdd">
+              <ion-icon *ngIf="!loadingAdd" slot="icon-only" name="add"></ion-icon>
+              <ion-spinner *ngIf="loadingAdd" slot="icon-only"></ion-spinner>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
