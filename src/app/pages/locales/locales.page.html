@@ -16,7 +16,7 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let resumen of lstResumenLocales">
-      <ion-label>{{ resumen.local }}</ion-label>
+      <ion-label class="ion-text-wrap">{{ resumen.local }}</ion-label>
       <ion-badge slot="end" color="warning">{{ resumen.cantidad | number }}</ion-badge>
     </ion-item>
   </ion-list>
