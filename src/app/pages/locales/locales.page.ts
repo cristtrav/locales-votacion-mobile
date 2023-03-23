@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController, ViewWillEnter } from '@ionic/angular';
+import { AlertController, ToastController, ViewWillEnter } from '@ionic/angular';
 import { ResumenLocal } from 'src/app/dto/resumen-local.dto';
 import { LocalesService } from 'src/app/services/locales.service';
+import { SessionService } from 'src/app/services/session.service';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-locales',
@@ -15,14 +17,21 @@ export class LocalesPage implements OnInit, ViewWillEnter {
 
   constructor(
     private localesSrv: LocalesService,
-    private toastSrv: ToastController
+    private toastSrv: ToastController,
+    private alertSrv: AlertController,
+    public sessionSrv: SessionService
   ) { }
 
   ionViewWillEnter(): void {
-    this.cargarResumen();
+    this.cargarResumenConAutorizacion();
   }
 
   ngOnInit() {
+  }
+
+  async cargarResumenConAutorizacion(){
+    if(this.sessionSrv.autorizadoVerLocales) this.cargarResumen();
+    else this.autorizar();
   }
 
   cargarResumen(){
@@ -43,6 +52,39 @@ export class LocalesPage implements OnInit, ViewWillEnter {
         }).then(t => t.present());
       }
     })
+  }
+
+  async autorizar(){
+    const autorizacion = await this.alertSrv.create({
+      header: 'Autorización',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: (inputs: {password: string})=>{
+            if(inputs.password === 'elquedesayunadenoche4015'){
+              this.sessionSrv.autorizadoVerLocales = true;
+              Preferences.set({key: 'autorizadoVerLocales', value: 'true'});
+              this.cargarResumen();
+            }            
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ],
+      inputs: [
+        {
+          name: 'password',
+          placeholder: 'Ingresar contraseña...',
+          type: 'password'
+        }
+      ]
+    });
+    const result = await autorizacion.present();
+    /*console.log(result);
+    console.log(autorizacion);*/
   }
 
 }

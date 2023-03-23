@@ -8,6 +8,7 @@ import { Votante } from '../dto/votante.dto';
 export class SessionService {
 
   usuario: Votante | null = null;
+  autorizadoVerLocales: boolean = false;
 
   constructor(
     private router: Router

@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Locales ({{lstResumenLocales.length}})</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cargarResumen()">
+      <ion-button (click)="cargarResumenConAutorizacion()">
         <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,7 +14,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <span *ngIf="!sessionSrv.autorizadoVerLocales">No autorizado...</span>
+  <ion-list *ngIf="sessionSrv.autorizadoVerLocales">
     <ion-item *ngFor="let resumen of lstResumenLocales">
       <ion-label class="ion-text-wrap">{{ resumen.local }}</ion-label>
       <ion-badge slot="end" color="warning">{{ resumen.cantidad | number }}</ion-badge>

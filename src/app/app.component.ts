@@ -17,8 +17,10 @@ export class AppComponent {
 
   cerrarSesion(){
     this.sessionSrv.usuario = null;
+    this.sessionSrv.autorizadoVerLocales = false;
     this.router.navigate(['login']);
     Preferences.remove({key: 'usuario'});
+    Preferences.remove({key: 'autorizadoVerLocales'});
   }
   
 }
