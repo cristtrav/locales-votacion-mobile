@@ -70,19 +70,20 @@ export class VotantesPage implements OnInit, ViewWillEnter {
         {
           text: 'Eliminar',
           role: 'destructive',
-          handler: () => { this.delete(votante.ci) }
+          handler: () => { this.delete(votante) }
         }
       ]
     }).then(c => c.present());
   }
 
-  delete(ciVotante: number){
+  delete(votante: Votante){
     const ciVotanteCarga = this.sessionSrv.usuario?.ci;
-    if(ciVotanteCarga) this.votantesSrv.delete({ciVotante, ciVotanteCarga}).subscribe({
+    if(ciVotanteCarga) this.votantesSrv.delete({ciVotante: votante.ci, ciVotanteCarga}).subscribe({
       next: () => {
         this.cargarPosibles();
         this.toastSrv.create({
           header: 'Votante eliminado',
+          message: `«${votante.nombres} ${votante.apellidos}»`,
           duration: 1500,
           color: 'success'
         }).then(t => t.present());
