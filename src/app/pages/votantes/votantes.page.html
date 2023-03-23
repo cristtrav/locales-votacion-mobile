@@ -32,7 +32,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-modal [isOpen]="isAddModalOpen" (didDismiss)="cargarPosibles()">
+  <ion-modal [isOpen]="isAddModalOpen">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -43,7 +43,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <app-form-add-votante></app-form-add-votante>
+        <app-form-add-votante (votanteAgregado)="lstVotantes.push($event)"></app-form-add-votante>
       </ion-content>
     </ng-template>
   </ion-modal>

@@ -26,7 +26,7 @@
               {{ votante.nombres }} {{ votante.apellidos }}
               <p>Nro. Documento: {{ votante.ci | number }}</p>
             </ion-label>
-            <ion-button slot="end" size="default" (click)="add(votante.ci)" [disabled]="loadingAdd">
+            <ion-button slot="end" size="default" (click)="add(votante)" [disabled]="loadingAdd">
               <ion-icon *ngIf="!loadingAdd" slot="icon-only" name="add"></ion-icon>
               <ion-spinner *ngIf="loadingAdd" slot="icon-only"></ion-spinner>
             </ion-button>

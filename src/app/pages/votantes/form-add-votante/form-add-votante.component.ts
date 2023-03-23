@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ToastController } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
@@ -13,6 +13,9 @@ import { VotantesService } from 'src/app/services/votantes.service';
 })
 export class FormAddVotanteComponent implements OnInit {
 
+  @Output()
+  votanteAgregado = new EventEmitter<Votante>();
+
   lstVotantes: Votante[] = [];
 
   isAddModalOpen: boolean = false;
@@ -26,7 +29,7 @@ export class FormAddVotanteComponent implements OnInit {
   constructor(
     private votantesSrv: VotantesService,
     private toastSrv: ToastController,
-    private sessionSrv: SessionService
+    private sessionSrv: SessionService,
   ) { }
 
   ngOnInit() { }
@@ -46,11 +49,12 @@ export class FormAddVotanteComponent implements OnInit {
       this.loadingBusqueda = true;
       forkJoin({
         votantes: this.votantesSrv.search(this.form.get('busqueda')?.value),
-        cantidad: this.votantesSrv.searchCount(this.form.get('busqueda')?.value)
+        cantidad: this.votantesSrv.searchCount(this.form.get('busqueda')?.value),
+        cargados: this.votantesSrv.findPosiblesByCi(this.sessionSrv.usuario?.ci ?? -1)
       }).subscribe({
         next: (resp) => {
           this.loadingBusqueda = false;
-          this.lstVotantes = resp.votantes;
+          this.lstVotantes = resp.votantes.filter(votante => !resp.cargados.find(cargado => cargado.ci == votante.ci));
           let header = '';
           if(resp.cantidad > 100) header = 'Mas de 100 coincidencias';
           else header = `${resp.votantes.length} ${resp.votantes.length === 1 ? 'coincidencia' : 'coincidencias'}`;
@@ -74,12 +78,14 @@ export class FormAddVotanteComponent implements OnInit {
     }
   }
 
-  add(ciVotante: number) {
+  add(votante: Votante) {
     const ciVotanteCarga = this.sessionSrv.usuario?.ci;
     if (ciVotanteCarga != null) {
       this.loadingAdd = true;
-      this.votantesSrv.add({ ciVotante, ciVotanteCarga }).subscribe({
+      this.votantesSrv.add({ ciVotante: votante.ci, ciVotanteCarga }).subscribe({
         next: () => {
+          this.votanteAgregado.emit(votante);
+          this.lstVotantes = this.lstVotantes.filter(vt => vt.ci != votante.ci);
           this.loadingAdd = false;
           this.toastSrv.create({
             header: 'Votante agregado',
