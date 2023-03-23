@@ -13,8 +13,8 @@
       <ion-col>
         <ion-button expand="block" (click)="buscar()" [disabled]="loadingBusqueda">
           <ion-icon *ngIf="!loadingBusqueda" slot="start" name="search"></ion-icon>
-          <ion-spinner *ngIf="loadingBusqueda"></ion-spinner>
-          Buscar
+          <ion-spinner *ngIf="loadingBusqueda" slot="icon-only"></ion-spinner>
+          <span *ngIf="!loadingBusqueda">Buscar</span>
         </ion-button>
       </ion-col>
     </ion-row>
