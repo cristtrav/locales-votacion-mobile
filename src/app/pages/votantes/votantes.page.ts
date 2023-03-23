@@ -35,7 +35,6 @@ export class VotantesPage implements OnInit, ViewWillEnter {
      this.loadingVotantes = true;
       this.votantesSrv.findPosiblesByCi(this.sessionSrv.usuario.ci).subscribe({
         next: (votantes) => {
-          console.log("posibles cargados");
           this.lstVotantes = votantes;
           this.loadingVotantes = false;
         },
