@@ -14,7 +14,7 @@ import { VotantesService } from 'src/app/services/votantes.service';
 export class LoginPage implements OnInit {
 
   form: FormGroup = new FormGroup({
-    ci: new FormControl(null, [Validators.required])
+    ci: new FormControl(null)
   })
 
   constructor(
@@ -28,6 +28,7 @@ export class LoginPage implements OnInit {
   }
 
   ingresar() {
+    this.form.controls['ci'].addValidators(Validators.required);
     Object.keys(this.form.controls).forEach(ctrlName => {
       this.form.get(ctrlName)?.markAsDirty();
       this.form.get(ctrlName)?.markAsTouched();
@@ -42,7 +43,7 @@ export class LoginPage implements OnInit {
             header: 'Ingreso correcto',
             message: `Usuario: ${votante.nombres} ${votante.apellidos}`,
             color: 'success',
-            duration: 3000
+            duration: 1500
           }).then(t => t.present());
           this.router.navigate(['main', 'votantes'])
         },
@@ -51,7 +52,7 @@ export class LoginPage implements OnInit {
           this.toastSrv.create({
             header: 'Error al ingresar',
             message: e.status === 404 ? `No se encuentra el nro. de documento «${ci}»` : e.message,
-            duration: 3000,
+            duration: 2000,
             color: 'danger'
           }).then(t => t.present())
         }

@@ -17,7 +17,7 @@ export class FormAddVotanteComponent implements OnInit {
 
   isAddModalOpen: boolean = false;
   form: FormGroup = new FormGroup({
-    busqueda: new FormControl(null, [Validators.required, Validators.minLength(3)])
+    busqueda: new FormControl(null, [Validators.minLength(3)])
   })
 
   loadingBusqueda: boolean = false;
@@ -36,6 +36,7 @@ export class FormAddVotanteComponent implements OnInit {
   }
 
   buscar() {
+    this.form.controls['busqueda']?.addValidators(Validators.required);
     Object.keys(this.form.controls).forEach(ctrlName => {
       this.form.get(ctrlName)?.markAsDirty();
       this.form.get(ctrlName)?.markAllAsTouched();
