@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { Votante } from 'src/app/dto/votante.dto';
 import { SessionService } from 'src/app/services/session.service';
 import { VotantesService } from 'src/app/services/votantes.service';
+import { Preferences } from '@capacitor/preferences'; 
 
 @Component({
   selector: 'app-login',
@@ -45,6 +45,7 @@ export class LoginPage implements OnInit {
             color: 'success',
             duration: 1500
           }).then(t => t.present());
+          Preferences.set({key: 'usuario', value: `${JSON.stringify(votante)}`});
           this.router.navigate(['main', 'votantes'])
         },
         error: (e) => {

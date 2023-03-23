@@ -6,6 +6,10 @@ const canAccessMainFn: CanActivateFn = (route: ActivatedRouteSnapshot, state: Ro
   return inject(SessionService).canAccessMain()
 }
 
+const canAccessLoginFn: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  return inject(SessionService).canAccessSession();
+}
+
 const routes: Routes = [
   {
     path: 'home',
@@ -18,6 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [canAccessLoginFn],
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
