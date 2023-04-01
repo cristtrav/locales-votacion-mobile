@@ -17,7 +17,7 @@ export class FormAddVotanteComponent implements OnInit {
   votanteAgregado = new EventEmitter<Votante>();
 
   lstVotantes: Votante[] = [];
-  ciVotantesExistentesSet = new Set<number>();
+  //ciVotantesExistentesSet = new Set<number>();
 
   isAddModalOpen: boolean = false;
   form: FormGroup = new FormGroup({
@@ -51,12 +51,12 @@ export class FormAddVotanteComponent implements OnInit {
       forkJoin({
         votantes: this.votantesSrv.search(this.form.get('busqueda')?.value),
         cantidad: this.votantesSrv.searchCount(this.form.get('busqueda')?.value),
-        cargados: this.votantesSrv.findPosiblesByCi(this.sessionSrv.usuario?.ci ?? -1)
+        //cargados: this.votantesSrv.findPosiblesByCi(this.sessionSrv.usuario?.ci ?? -1)
       }).subscribe({
         next: (resp) => {
           this.loadingBusqueda = false;
-          this.ciVotantesExistentesSet.clear();
-          resp.cargados.forEach(votanteExistente => {this.ciVotantesExistentesSet.add(votanteExistente.ci)});
+          //this.ciVotantesExistentesSet.clear();
+          //resp.cargados.forEach(votanteExistente => {this.ciVotantesExistentesSet.add(votanteExistente.ci)});
           this.lstVotantes = resp.votantes;
           let header = '';
           if(resp.cantidad > 100) header = 'Mas de 100 coincidencias';
@@ -88,7 +88,7 @@ export class FormAddVotanteComponent implements OnInit {
       this.votantesSrv.add({ ciVotante: votante.ci, ciVotanteCarga }).subscribe({
         next: () => {
           this.votanteAgregado.emit(votante);
-          this.ciVotantesExistentesSet.add(votante.ci);
+          //this.ciVotantesExistentesSet.add(votante.ci);
           this.mapLoadingAdd.set(votante.ci, false);
           this.toastSrv.create({
             header: 'Votante agregado',

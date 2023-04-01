@@ -15,15 +15,27 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let votante of lstVotantes">
-      <ion-label>
-        {{ votante.nombres }} {{ votante.apellidos }}
-        <p>Nro. Documento: {{ votante.ci | number }}</p>
-      </ion-label>
-      <ion-button slot="end" size="default" color="danger" (click)="confirmDelete(votante)">
-        <ion-icon name="trash" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-item>
+    <ion-item-sliding *ngFor="let votante of lstVotantes">
+      <ion-item >
+        <ion-label class="ion-text-wrap">
+          {{ votante.nombres }} {{ votante.apellidos }}
+          <p>
+            <ion-badge color="medium">
+              <ion-icon name="card-outline"></ion-icon>
+              {{ votante.ci | number}}
+            </ion-badge>
+          </p>
+          <p>
+            <ion-icon name="location-outline"></ion-icon>{{ votante.local }}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="confirmDelete(votante)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">

@@ -2,5 +2,7 @@ export interface Votante{
     ci: number;
     nombres: string;
     apellidos: string;
-    idLocal: number;
+    idlocal: number;
+    local: string;
+    agregado: boolean;
 }
