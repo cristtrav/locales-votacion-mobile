@@ -30,7 +30,10 @@
                   {{ votante.ci | number }}
                 </ion-badge>          
               </p>
-              <p>{{ votante.local }}</p>
+              <p>
+                <ion-icon name="location-outline"></ion-icon>
+                {{ votante.local }}
+              </p>
             </ion-label>
             <ion-button *ngIf="votante.agregado" slot="end" color="success" disabled="true" size="default">
               <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
