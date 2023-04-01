@@ -24,7 +24,13 @@
           <ion-item *ngFor="let votante of lstVotantes" >
             <ion-label class="ion-text-wrap">
               {{ votante.nombres }} {{ votante.apellidos }}
-              <p>Nro. Documento: {{ votante.ci | number }}</p>
+              <p>
+                <ion-badge color="medium">
+                  <ion-icon name="card-outline"></ion-icon>
+                  {{ votante.ci | number }}
+                </ion-badge>          
+              </p>
+              <p>{{ votante.local }}</p>
             </ion-label>
             <ion-button *ngIf="votante.agregado" slot="end" color="success" disabled="true" size="default">
               <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
