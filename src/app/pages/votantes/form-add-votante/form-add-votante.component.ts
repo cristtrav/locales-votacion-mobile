@@ -87,6 +87,7 @@ export class FormAddVotanteComponent implements OnInit {
       this.mapLoadingAdd.set(votante.ci, true);
       this.votantesSrv.add({ ciVotante: votante.ci, ciVotanteCarga }).subscribe({
         next: () => {
+          votante.agregado = true;
           this.votanteAgregado.emit(votante);
           //this.ciVotantesExistentesSet.add(votante.ci);
           this.mapLoadingAdd.set(votante.ci, false);
