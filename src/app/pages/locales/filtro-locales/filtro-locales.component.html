@@ -1,0 +1,38 @@
+<ion-list>
+  <ion-item>
+    <ion-label>Departamento</ion-label>
+    <ion-select interface="action-sheet"
+      [disabled]="!sessionSrv.autorizadoVerLocales"
+      placeholder="Seleccionar..."
+      [(ngModel)]="filtroIdDepartamento"
+      (ngModelChange)="seleccionarFiltroDepartamento($event)">
+      <ion-select-option *ngFor="let departamento of lstDepartamentosFiltro" [value]="departamento.id">
+        {{ departamento.id }} - {{ departamento.nombre }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="filtroIdDepartamento != null">
+    <ion-label>Distrito</ion-label>
+    <ion-select interface="action-sheet"
+      [disabled]="!sessionSrv.autorizadoVerLocales"
+      placeholder="Seleccionar..."
+      [(ngModel)]="filtroIdDistrito"
+      (ngModelChange)="seleccionarFiltroDistrito($event)">
+      <ion-select-option *ngFor="let distrito of lstDistritosFiltro" [value]="distrito.id">
+        {{ distrito.id }} - {{ distrito.nombre}}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="filtroIdDistrito != null">
+    <ion-label>Zona</ion-label>
+    <ion-select interface="action-sheet"
+      [disabled]="!sessionSrv.autorizadoVerLocales"
+      placeholder="Seleccionar..."
+      [(ngModel)]="filtroIdZona"
+      (ngModelChange)="seleccionarFiltroZona($event)">
+      <ion-select-option *ngFor="let zona of lstZonasFiltro" [value]="zona.id">
+        {{ zona.id }} - {{ zona.nombre }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-list>

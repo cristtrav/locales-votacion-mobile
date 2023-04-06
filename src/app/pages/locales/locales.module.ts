@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { LocalesPageRoutingModule } from './locales-routing.module';
 
 import { LocalesPage } from './locales.page';
+import { FiltroLocalesComponent } from './filtro-locales/filtro-locales.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { LocalesPage } from './locales.page';
     IonicModule,
     LocalesPageRoutingModule
   ],
-  declarations: [LocalesPage]
+  declarations: [LocalesPage, FiltroLocalesComponent]
 })
 export class LocalesPageModule {}

@@ -5,6 +5,9 @@
     </ion-buttons>
     <ion-title>Locales ({{lstResumenLocales.length}})</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="setModalFiltrosOpen(true)">
+        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="cargarResumenConAutorizacion()">
         <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
       </ion-button>
@@ -14,6 +17,22 @@
 </ion-header>
 
 <ion-content>
+  <div
+    class="ion-padding-top ion-padding-start ion-padding-end" 
+    *ngIf="sessionSrv.autorizadoVerLocales && (filtroDepartamento != null || filtroDistrito != null || filtroZona != null)">
+    <ion-chip *ngIf="filtroDepartamento" (click)="limpiarFiltroDepartamento()" color="tertiary">
+      <ion-label>{{ filtroDepartamento.nombre }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+    <ion-chip *ngIf="filtroDistrito" (click)="limpiarFiltroDistrito()" color="tertiary">
+      <ion-label>{{ filtroDistrito.nombre }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+    <ion-chip *ngIf="filtroZona" (click)="limpiarFiltroZona()" color="tertiary">
+      <ion-label>{{ filtroZona.nombre }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+  </div>
   <span *ngIf="!sessionSrv.autorizadoVerLocales">No autorizado...</span>
   <ion-list *ngIf="sessionSrv.autorizadoVerLocales">
     <ion-item *ngFor="let resumen of lstResumenLocales">
@@ -33,3 +52,23 @@
     </ion-item>
   </ion-list>
 </ion-content>
+
+<ion-modal [isOpen]="isModalFiltrosOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Filtros</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setModalFiltrosOpen(false)">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <app-filtro-locales
+        (filtroDepartamento)="filtroDepartamento = $event"
+        (filtroDistrito)="filtroDistrito = $event"
+        (filtroZona)="filtroZona = $event">
+      </app-filtro-locales>
+    </ion-content>
+  </ng-template>
+</ion-modal>
