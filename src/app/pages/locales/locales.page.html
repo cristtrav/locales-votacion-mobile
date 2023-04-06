@@ -17,8 +17,19 @@
   <span *ngIf="!sessionSrv.autorizadoVerLocales">No autorizado...</span>
   <ion-list *ngIf="sessionSrv.autorizadoVerLocales">
     <ion-item *ngFor="let resumen of lstResumenLocales">
-      <ion-label class="ion-text-wrap">{{ resumen.local }}</ion-label>
-      <ion-badge slot="end" color="warning">{{ resumen.cantidad | number }}</ion-badge>
+      <ion-label class="ion-text-wrap">
+        {{ resumen.local }}
+        <p>
+          <ion-badge color="medium">
+            <ion-icon name="map-outline"></ion-icon>
+            {{ resumen.distrito }} | {{ resumen.departamento }}
+          </ion-badge>
+        </p>
+        <p>
+          {{ resumen.zona }}
+        </p>
+      </ion-label>
+      <ion-badge slot="end" color="danger">{{ resumen.cantidad | number }}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>
