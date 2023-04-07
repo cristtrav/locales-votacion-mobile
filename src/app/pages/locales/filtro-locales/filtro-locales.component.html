@@ -1,7 +1,7 @@
 <ion-list>
   <ion-item>
     <ion-label>Departamento</ion-label>
-    <ion-select interface="action-sheet"
+    <ion-select interface="popover"
       [disabled]="!sessionSrv.autorizadoVerLocales"
       placeholder="Seleccionar..."
       [(ngModel)]="filtroIdDepartamento"
@@ -10,10 +10,11 @@
         {{ departamento.id }} - {{ departamento.nombre }}
       </ion-select-option>
     </ion-select>
+    <ion-spinner *ngIf="loadingDepartamentos" name="crescent" slot="end"></ion-spinner>
   </ion-item>
   <ion-item *ngIf="filtroIdDepartamento != null">
     <ion-label>Distrito</ion-label>
-    <ion-select interface="action-sheet"
+    <ion-select interface="popover"
       [disabled]="!sessionSrv.autorizadoVerLocales"
       placeholder="Seleccionar..."
       [(ngModel)]="filtroIdDistrito"
@@ -22,10 +23,11 @@
         {{ distrito.id }} - {{ distrito.nombre}}
       </ion-select-option>
     </ion-select>
+    <ion-spinner *ngIf="loadingDistritos" name="crescent" slot="end"></ion-spinner>
   </ion-item>
   <ion-item *ngIf="filtroIdDistrito != null">
     <ion-label>Zona</ion-label>
-    <ion-select interface="action-sheet"
+    <ion-select interface="popover"
       [disabled]="!sessionSrv.autorizadoVerLocales"
       placeholder="Seleccionar..."
       [(ngModel)]="filtroIdZona"
@@ -34,5 +36,6 @@
         {{ zona.id }} - {{ zona.nombre }}
       </ion-select-option>
     </ion-select>
+    <ion-spinner *ngIf="loadingZonas" name="crescent" slot="end"></ion-spinner>
   </ion-item>
 </ion-list>

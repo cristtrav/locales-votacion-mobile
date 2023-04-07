@@ -32,6 +32,10 @@ export class FiltroLocalesComponent  implements OnInit {
   filtroIdDistrito: number | null = null;
   filtroIdZona: number | null = null;
 
+  loadingDepartamentos: boolean = false;
+  loadingDistritos: boolean = false;
+  loadingZonas: boolean = false;
+
   constructor(
     public sessionSrv: SessionService,
     private departamentosSrv: DepartamentosService,
@@ -48,11 +52,14 @@ export class FiltroLocalesComponent  implements OnInit {
   }
 
   cargarDepartamentos(){
+    this.loadingDepartamentos = true;
     this.departamentosSrv.findAll().subscribe({
       next: (departamentos) => {
+        this.loadingDepartamentos = false;
         this.lstDepartamentosFiltro = departamentos;
       },
       error: (e) => {
+        this.loadingDepartamentos = false;
         console.error('Error al cargar departamentos', e);
         this.toastSrv.create({
           header: 'Error al cargar departamentos',
@@ -65,12 +72,15 @@ export class FiltroLocalesComponent  implements OnInit {
   }
 
   cargarDistritos(iddepartamento: number){
+    this.loadingDistritos = true;
     const params = new HttpParams().append('iddepartamento', iddepartamento);
     this.distritosSrv.findAll(params).subscribe({
       next: (distritos) =>{
+        this.loadingDistritos = false;
         this.lstDistritosFiltro = distritos;
       },
       error: (e) => {
+        this.loadingDistritos = false;
         console.error('Error al cargar distritos', e);
         this.toastSrv.create({
           header: 'Error al cargar distritos',
@@ -83,14 +93,17 @@ export class FiltroLocalesComponent  implements OnInit {
   }
 
   cargarZonas(iddepartamento: number, iddistrito: number){
+    this.loadingZonas = true;
     const params = new HttpParams()
     .append('iddepartamento', iddepartamento)
     .append('iddistrito', iddistrito);
     this.zonasSrv.findAll(params).subscribe({
       next: (zonas) => {
+        this.loadingZonas = false;
         this.lstZonasFiltro = zonas;
       },
       error: (e) => {
+        this.loadingZonas = false;
         console.error('Error al cargar zonas', e);
         this.toastSrv.create({
           header: 'Error al cargar zonas',
