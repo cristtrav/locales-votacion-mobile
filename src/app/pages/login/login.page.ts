@@ -14,6 +14,8 @@ import { Votante } from 'src/app/dto/votante.dto';
 })
 export class LoginPage implements OnInit {
 
+  loadingLogin: boolean = false;
+
   form: FormGroup = new FormGroup({
     ci: new FormControl(null)
   })
@@ -36,9 +38,11 @@ export class LoginPage implements OnInit {
       this.form.get(ctrlName)?.updateValueAndValidity();
     })
     if (this.form.valid) {
+      this.loadingLogin = true;
       const ci = this.form.controls['ci'].value;
       this.votantesSrv.findByCi(ci).subscribe({
         next: async (votante) => {
+          this.loadingLogin = false;
           if (!(await this.yaEstoyRegistrado(votante.ci))) await this.registrarAUnoMismo(votante);
           this.sessionSrv.usuario = votante;
           this.toastSrv.create({
@@ -51,6 +55,7 @@ export class LoginPage implements OnInit {
           this.router.navigate(['votantes'])
         },
         error: (e) => {
+          this.loadingLogin = false;
           console.error('Error al obtener votante por CI', e);
           this.toastSrv.create({
             header: 'Error al ingresar',

@@ -23,9 +23,10 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-button expand="block" (click)="ingresar()">
-            <ion-icon slot="start" name="enter-outline"></ion-icon>
-            Ingresar
+          <ion-button expand="block" (click)="ingresar()" [disabled]="loadingLogin">
+            <ion-spinner *ngIf="loadingLogin"></ion-spinner>
+            <ion-icon *ngIf="!loadingLogin" slot="start" name="enter-outline"></ion-icon>
+            <span *ngIf="!loadingLogin">Ingresar</span>
           </ion-button>
         </ion-col>
       </ion-row>
