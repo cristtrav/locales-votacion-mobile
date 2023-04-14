@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Locales ({{lstResumenLocales.length}})</ion-title>
+    <ion-title>Locales ({{lstResumenLocales.length | number}})</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="setModalFiltrosOpen(true)">
         <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
@@ -52,6 +52,11 @@
     </ion-item>
   </ion-list>
 </ion-content>
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-title>Votantes ({{ totalVotantes | number }})</ion-title>
+  </ion-toolbar>
+</ion-footer>
 
 <ion-modal [isOpen]="isModalFiltrosOpen">
   <ng-template>

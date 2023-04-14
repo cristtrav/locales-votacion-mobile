@@ -24,6 +24,7 @@ export class LocalesPage implements OnInit, ViewWillEnter {
   lstResumenLocales: ResumenLocal[] = [];
   loadingResumenes: boolean = false;
   isModalFiltrosOpen: boolean = false;
+  totalVotantes: number = 0;
 
   set filtroDepartamento(dep: Departamento | null){
     this._filtroDepartamento = dep;
@@ -91,6 +92,8 @@ export class LocalesPage implements OnInit, ViewWillEnter {
       next: (resumenes) => {
         this.loadingResumenes = false;
         this.lstResumenLocales = resumenes;
+        this.totalVotantes = 0;
+        this.lstResumenLocales.forEach(resumen => this.totalVotantes += Number(resumen.cantidad));
       },
       error: (e) => {
         this.loadingResumenes = false;
